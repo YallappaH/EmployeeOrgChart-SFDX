@@ -1,210 +1,240 @@
-<aura:component implements="flexipage:availableForAllPageTypes" controller="EmployeeOrgChartController">
-    <!-- Attributes -->
-    <aura:attribute name="employees" type="Object[]" default="[]"/>
-    <aura:attribute name="selectedDepartment" type="String" default=""/>
-    <aura:attribute name="selectedEmployee" type="Object" default="{}"/>
-    <aura:attribute name="showEmployeeDetails" type="Boolean" default="false"/>
-    <aura:attribute name="employeeDetails" type="Object" default="{}"/>
-    <aura:attribute name="stats" type="Object" default="{}"/>
-    <aura:attribute name="rootEmployees" type="Object[]" default="[]"/>
+<aura:component controller="EmployeeOrgChartController" 
+    implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId">
     
-    <!-- Handlers -->
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="employees" type="Object[]"/>
+    <aura:attribute name="rootEmployees" type="Object[]"/>
+    <aura:attribute name="selectedDepartment" type="String"/>
+    <aura:attribute name="departmentStats" type="Object"/>
+    <aura:attribute name="hideContractors" type="Boolean" default="false"/>
+    <aura:attribute name="showingOrgChart" type="Boolean" default="true"/>
+    <aura:attribute name="selectedEmployee" type="Object"/>
+    <aura:attribute name="selectedEmployeeDetails" type="Object"/>
+    
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    <aura:handler name="employeeSelect" event="c:EmployeeSelectEvent" action="{!c.handleEmployeeSelect}"/>
+    <aura:handler event="c:EmployeeSelectEvent" action="{!c.handleEmployeeSelect}"/>
     
-    <!-- UI -->
-    <div class="slds-grid slds-grid_vertical full-height-container">
-        <div class="slds-col slds-size_1-of-1">
-            <div class="slds-grid slds-wrap full-height">
-                <!-- Sidebar with department filters -->
-                <div class="slds-col slds-size_small sidebar-container">
-                    <div class="sidebar slds-p-around_medium">
-                        <div class="slds-text-heading_small slds-p-bottom_small">Departments</div>
-                        <div class="department-list">
-                            <!-- All Departments option -->
-                            <div class="{
-                                'department-item' : true, 
-                                'selected' : v.selectedDepartment == ''
-                             }"
-                                 onclick="{!c.filterByDepartment}" data-department="">
-                                <span>All Departments</span>
-                                <span class="dept-count">{!v.stats.totalEmployees || 0}</span>
-                            </div>
-                            
-                            <!-- Data Cloud -->
-                            <div class="{
-                                'department-item' : true, 
-                                'data-cloud' : true,
-                                'selected' : v.selectedDepartment == 'Data Cloud'
-                             }"
-                                 onclick="{!c.filterByDepartment}" data-department="Data Cloud">
-                                <span>Data Cloud</span>
-                            </div>
-                            
-                            <!-- Viz -->
-                            <div class="{
-                                'department-item' : true, 
-                                'viz' : true,
-                                'selected' : v.selectedDepartment == 'Viz'
-                             }"
-                                 onclick="{!c.filterByDepartment}" data-department="Viz">
-                                <span>Viz</span>
-                            </div>
-                            
-                            <!-- EDH -->
-                            <div class="{
-                                'department-item' : true, 
-                                'edh' : true,
-                                'selected' : v.selectedDepartment == 'EDH'
-                             }"
-                                 onclick="{!c.filterByDepartment}" data-department="EDH">
-                                <span>EDH</span>
-                            </div>
-                            
-                            <!-- Data Tools -->
-                            <div class="{
-                                'department-item' : true, 
-                                'data-tools' : true,
-                                'selected' : v.selectedDepartment == 'Data Tools'
-                             }"
-                                 onclick="{!c.filterByDepartment}" data-department="Data Tools">
-                                <span>Data Tools</span>
-                            </div>
-                            
-                            <!-- Core Infra -->
-                            <div class="{
-                                'department-item' : true, 
-                                'core-infra' : true,
-                                'selected' : v.selectedDepartment == 'Core Infra'
-                             }"
-                                 onclick="{!c.filterByDepartment}" data-department="Core Infra">
-                                <span>Core Infra</span>
-                            </div>
-                            
-                            <!-- Snowflake -->
-                            <div class="{
-                                'department-item' : true, 
-                                'snowflake' : true,
-                                'selected' : v.selectedDepartment == 'Snowflake'
-                             }"
-                                 onclick="{!c.filterByDepartment}" data-department="Snowflake">
-                                <span>Snowflake</span>
-                            </div>
+    <div class="slds-grid slds-grid_horizontal full-height-container">
+        <!-- Department Filters Sidebar -->
+        <div class="slds-col slds-size_2 sidebar-container">
+            <div class="slds-p-around_small sidebar">
+                <div class="department-filters">
+                    <div class="filter-heading">Departments</div>
+                    
+                    <!-- Department Overview -->
+                    <aura:if isTrue="{!v.departmentStats}">
+                        <div class="department-overview slds-m-bottom_small">
+                            <h2 class="slds-text-heading_small">Department Overview</h2>
+                            <p><strong>Total Employees:</strong> {!v.departmentStats.totalEmployees}</p>
+                            <p><strong>FTE Count:</strong> {!v.departmentStats.fteCount}</p>
+                            <p><strong>Contractor Count:</strong> {!v.departmentStats.contractorCount}</p>
+                        </div>
+                    </aura:if>
+                    
+                    <!-- Department Vertical List -->
+                    <div class="department-list">
+                        <div class="department-item data-cloud" 
+                             onclick="{!c.filterByDepartment}" 
+                             data-department="Data Cloud"
+                             style="border-left-color: #F5C93D;">
+                            <span>Data Cloud</span>
+                            <span class="dept-count">36</span>
+                        </div>
+                        <div class="department-item viz" 
+                             onclick="{!c.filterByDepartment}" 
+                             data-department="Viz"
+                             style="border-left-color: #B6BFEC;">
+                            <span>Viz</span>
+                            <span class="dept-count">13</span>
+                        </div>
+                        <div class="department-item snowflake" 
+                             onclick="{!c.filterByDepartment}" 
+                             data-department="Snowflake"
+                             style="border-left-color: #87CEFA;">
+                            <span>Snowflake</span>
+                            <span class="dept-count">11</span>
+                        </div>
+                        <div class="department-item edh" 
+                             onclick="{!c.filterByDepartment}" 
+                             data-department="EDH"
+                             style="border-left-color: #E6BBE6;">
+                            <span>EDH</span>
+                            <span class="dept-count">9</span>
+                        </div>
+                        <div class="department-item data-tools" 
+                             onclick="{!c.filterByDepartment}" 
+                             data-department="Data Tools"
+                             style="border-left-color: #A9D2EA;">
+                            <span>Data Tools</span>
+                            <span class="dept-count">13</span>
+                        </div>
+                        <div class="department-item core-infra" 
+                             onclick="{!c.filterByDepartment}" 
+                             data-department="Core Infra"
+                             style="border-left-color: #B8B8D1;">
+                            <span>Core Infra</span>
+                            <span class="dept-count">10</span>
+                        </div>
+                        <div class="department-item indirect-labor" 
+                             onclick="{!c.filterByDepartment}" 
+                             data-department="Indirect Labor"
+                             style="border-left-color: #AAAAAA;">
+                            <span>Indirect Labor</span>
+                            <span class="dept-count">0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Hide Contractors Toggle -->
+                    <div class="slds-m-top_small">
+                        <lightning:input type="toggle" 
+                                         label="Hide Contractors" 
+                                         name="hideContractors" 
+                                         checked="{!v.hideContractors}" 
+                                         onchange="{!c.toggleContractors}" />
+                    </div>
+                    
 
-                            <!-- Indirect Labor -->
-                            <div class="{
-                                'department-item' : true, 
-                                'indirect-labor' : true,
-                                'selected' : v.selectedDepartment == 'Indirect Labor'
-                             }"
-                                 onclick="{!c.filterByDepartment}" data-department="Indirect Labor">
-                                <span>Indirect Labor</span>
-                            </div>
-                        </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Organization Chart Area -->
+        <div class="slds-col slds-grow org-chart-container">
+            <div class="slds-grid full-height">
+                <!-- Hierarchy Section -->
+                <div class="slds-col slds-size_8 hierarchy-section slds-p-around_small">
+                    <div class="org-hierarchy-container">
+                        <aura:iteration items="{!v.rootEmployees}" var="employee">
+                            <c:EmployeeNode 
+                                employee="{!employee}" 
+                                employees="{!v.employees}" 
+                                isRoot="true"/>
+                        </aura:iteration>
                     </div>
                 </div>
                 
-                <!-- Main org chart visualization area -->
-                <div class="slds-col slds-size_1-of-1 slds-large-size_7-of-12 slds-grow org-chart-container">
-                    <div class="hierarchy-section slds-p-around_medium">
-                        <div class="slds-text-heading_medium slds-p-bottom_small">
-                            <aura:if isTrue="{!empty(v.selectedDepartment)}">
-                                All Departments
-                                <aura:set attribute="else">
-                                    {!v.selectedDepartment}
-                                </aura:set>
-                            </aura:if>
-                        </div>
-                        
-                        <!-- Org chart hierarchy -->
-                        <div class="org-hierarchy-container">
-                            <aura:if isTrue="{!not(empty(v.rootEmployees))}">
-                                <aura:iteration items="{!v.rootEmployees}" var="root">
-                                    <c:EmployeeNode 
-                                        employee="{!root}" 
-                                        employees="{!v.employees}" 
-                                        isRoot="true"/>
-                                </aura:iteration>
-                                
-                                <aura:set attribute="else">
-                                    <div class="slds-text-body_regular slds-p-top_medium">
-                                        <aura:if isTrue="{!v.employees.length == 0}">
-                                            No employees found. Please check your data structure.
-                                            <aura:set attribute="else">
-                                                No root employees found. Please check reporting relationships.
-                                            </aura:set>
-                                        </aura:if>
-                                    </div>
-                                </aura:set>
-                            </aura:if>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Employee details panel -->
-                <aura:if isTrue="{!v.showEmployeeDetails}">
-                    <div class="slds-col slds-size_1-of-1 slds-large-size_3-of-12 employee-details-panel slds-p-around_medium">
-                        <div class="slds-grid slds-grid_vertical">
-                            <div class="slds-col profile-card slds-p-bottom_medium">
-                                <div class="slds-text-heading_medium slds-p-bottom_small">{!v.selectedEmployee.Name}</div>
-                                <div class="job-title">{!v.selectedEmployee.Job_Title__c}</div>
-                                
-                                <!-- Department & Employment Type Badges -->
-                                <div class="badge-container">
-                                    <aura:if isTrue="{!v.selectedEmployee.Department__c}">
-                                        <span class="department-badge">{!v.selectedEmployee.Department__c}</span>
-                                    </aura:if>
-                                    <aura:if isTrue="{!v.selectedEmployee.Employee_Type__c}">
-                                        <span class="{
-                                            'employee-type-badge' : true,
-                                            v.selectedEmployee.Employee_Type__c : true
-                                         }">{!v.selectedEmployee.Employee_Type__c}</span>
-                                    </aura:if>
+                <!-- Employee Details Panel -->
+                <aura:if isTrue="{!v.selectedEmployee}">
+                    <div class="slds-col slds-size_4 employee-details-panel slds-p-around_small">
+                        <div class="panel-content slds-card">
+                            <div class="slds-card__header slds-grid">
+                                <h2 class="slds-text-heading_medium slds-grow">{!v.selectedEmployee.Name}</h2>
+                                <div class="slds-no-flex">
+                                    <button class="slds-button slds-button_icon" title="Close" onclick="{!c.closeDetailPanel}">
+                                        <lightning:icon iconName="utility:close" size="small" />
+                                    </button>
                                 </div>
                             </div>
                             
-                            <!-- Manager Information -->
-                            <aura:if isTrue="{!v.employeeDetails.managerName}">
-                                <div class="slds-col section-group">
-                                    <div class="section-heading">Manager</div>
-                                    <div class="manager-link" onclick="{!c.selectManager}">
-                                        <lightning:icon iconName="utility:user" size="xx-small" class="slds-m-right_x-small"/>                                        
-                                        {!v.employeeDetails.managerName}
+                            <div class="slds-card__body slds-card__body_inner">
+                                <!-- Profile Summary -->
+                                <div class="profile-card slds-grid slds-m-bottom_small">
+                                    <div class="slds-col slds-size_1-of-4">
+                                        <lightning:icon iconName="standard:user" size="large" />
+                                    </div>
+                                    <div class="slds-col slds-size_3-of-4">
+                                        <p class="job-title">{!v.selectedEmployee.Job_Title__c}</p>
+                                        <div class="badge-container">
+                                            <span class="department-badge">{!v.selectedEmployee.Department__c}</span>
+                                            <span class="{! 'employee-type-badge ' + v.selectedEmployee.Employee_Type__c}">
+                                                {!v.selectedEmployee.Employee_Type__c}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </aura:if>
-                            
-                            <!-- Basic Details Section -->
-                            <div class="slds-col section-group">
-                                <div class="section-heading">Details</div>
                                 
-                                <aura:if isTrue="{!v.selectedEmployee.Department__c}">
-                                    <div class="detail-row">
-                                        <div class="detail-label">Department</div>
-                                        <div class="detail-value">{!v.selectedEmployee.Department__c}</div>
+                                <!-- Comprehensive Details Section -->
+                                <div class="details-section">
+                                    <div class="section-group">
+                                        <h3 class="section-heading">General Information</h3>
+                                        <div class="detail-row">
+                                            <span class="detail-label">Full Name:</span>
+                                            <span class="detail-value">{!v.selectedEmployee.Name}</span>
+                                        </div>
+                                        <div class="detail-row">
+                                            <span class="detail-label">Job Title:</span>
+                                            <span class="detail-value">{!v.selectedEmployee.Job_Title__c}</span>
+                                        </div>
+                                        <div class="detail-row">
+                                            <span class="detail-label">Department:</span>
+                                            <span class="detail-value">{!v.selectedEmployee.Department__c}</span>
+                                        </div>
+                                        <div class="detail-row">
+                                            <span class="detail-label">Role Category:</span>
+                                            <span class="detail-value">{!v.selectedEmployee.Role_Category__c}</span>
+                                        </div>
+                                        <div class="detail-row">
+                                            <span class="detail-label">Product Line:</span>
+                                            <span class="detail-value">{!v.selectedEmployee.Product_Line__c || 'N/A'}</span>
+                                        </div>
                                     </div>
-                                </aura:if>
-                                
-                                <aura:if isTrue="{!v.selectedEmployee.Role_Category__c}">
-                                    <div class="detail-row">
-                                        <div class="detail-label">Role</div>
-                                        <div class="detail-value">{!v.selectedEmployee.Role_Category__c}</div>
+                                    
+                                    <!-- Manager Information -->
+                                    <aura:if isTrue="{!v.selectedEmployee.Manager__r}">
+                                        <div class="section-group">
+                                            <h3 class="section-heading">Manager Details</h3>
+                                            <div class="detail-row">
+                                                <span class="detail-label">Manager Name:</span>
+                                                <span class="detail-value manager-link" onclick="{!c.navigateToManager}">
+                                                    {!v.selectedEmployee.Manager__r.Name}
+                                                    <lightning:icon iconName="utility:chevronright" size="x-small" class="slds-m-left_xx-small" />
+                                                </span>
+                                            </div>
+                                            <div class="detail-row">
+                                                <span class="detail-label">Manager Title:</span>
+                                                <span class="detail-value">{!v.selectedEmployee.Manager__r.Job_Title__c}</span>
+                                            </div>
+                                        </div>
+                                    </aura:if>
+                                    
+                                    <!-- Contact Information -->
+                                    <div class="section-group">
+                                        <h3 class="section-heading">Contact Information</h3>
+                                        <div class="detail-row">
+                                            <span class="detail-label">Email:</span>
+                                            <span class="detail-value">{!v.selectedEmployee.Name + '@example.com'}</span>
+                                        </div>
+                                        <div class="detail-row">
+                                            <span class="detail-label">Phone:</span>
+                                            <span class="detail-value">+1 (555) 123-4567</span>
+                                        </div>
+                                        <div class="detail-row">
+                                            <span class="detail-label">Location:</span>
+                                            <span class="detail-value">San Francisco, CA</span>
+                                        </div>
                                     </div>
-                                </aura:if>
-                                
-                                <aura:if isTrue="{!v.selectedEmployee.Product_Line__c}">
-                                    <div class="detail-row">
-                                        <div class="detail-label">Product Line</div>
-                                        <div class="detail-value">{!v.selectedEmployee.Product_Line__c}</div>
-                                    </div>
-                                </aura:if>
-                                
-                                <aura:if isTrue="{!v.employeeDetails.directReportCount > 0}">
-                                    <div class="detail-row">
-                                        <div class="detail-label">Direct Reports</div>
-                                        <div class="detail-value">{!v.employeeDetails.directReportCount}</div>
-                                    </div>
-                                </aura:if>
+                                    
+                                    <!-- Performance and Additional Stats -->
+                                    <aura:if isTrue="{!v.selectedEmployeeDetails}">
+                                        <div class="section-group">
+                                            <h3 class="section-heading">Performance Metrics</h3>
+                                            <div class="detail-row">
+                                                <span class="detail-label">Direct Reports:</span>
+                                                <span class="detail-value">{!v.selectedEmployeeDetails.directReportCount || '0'}</span>
+                                            </div>
+                                            <aura:if isTrue="{!v.selectedEmployee.Role_Category__c == 'Engineer'}">
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Project Count:</span>
+                                                    <span class="detail-value">{!v.selectedEmployeeDetails.engineerStats.projectCount || '0'}</span>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Commit Count:</span>
+                                                    <span class="detail-value">{!v.selectedEmployeeDetails.engineerStats.commitCount || '0'}</span>
+                                                </div>
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.selectedEmployee.Role_Category__c == 'Product Manager'}">
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Product Count:</span>
+                                                    <span class="detail-value">{!v.selectedEmployeeDetails.productManagerStats.productCount || '0'}</span>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Feature Count:</span>
+                                                    <span class="detail-value">{!v.selectedEmployeeDetails.productManagerStats.featureCount || '0'}</span>
+                                                </div>
+                                            </aura:if>
+                                        </div>
+                                    </aura:if>
+                                </div>
                             </div>
                         </div>
                     </div>
