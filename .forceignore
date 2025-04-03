@@ -1,24 +1,7 @@
-# List files or directories below to ignore them when running force:source:push, force:source:pull, or force:source:status
-# More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
-#
-
-package.xml
-**/.DS_Store
-**/.eslintrc.json
-
-# LWC configuration files
+# List files to ignore with Salesforce DX
 **/jsconfig.json
-**/.eslintrc.json
-
-# LWC Jest
-**/__tests__/**
-
-# Metadata cache
-.sfdx/
-.sf/
-
-# VSCode workspace
-.vscode
-
-# NodeJS modules
-node_modules/
+.eslintrc.json
+converted/
+docs/
+tests/
+*.config.js
