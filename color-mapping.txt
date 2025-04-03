@@ -1,0 +1,43 @@
+Organization Chart Color Mapping (April 2, 2025)
+
+Color Code Mapping:
+1. Yellow (Data Cloud): 
+   - Karthik Immadi
+   - Josa Gonzalez 
+   - Pushpalatha Alla
+   - Karthikeya Buchiraju
+   - Others in yellow boxes
+
+2. Blue (Viz):
+   - All Tableau related roles
+   - Braden Whitehead
+   - Sujit Ravuri
+   - Others in blue boxes
+
+3. Purple/Pink (EDH):
+   - Derek Chan
+   - Madhuri Tirumalasetti
+   - Karthik Reddy Barla
+   - Sai Sreekanta
+   - Others in purple boxes
+
+4. Light Blue (Data Tools + Core Infra):
+   - Mike Williams
+   - Ashok Neelam
+   - Carlos Rodrigo Rogel
+   - Jagadish Kommineni
+   - Others in light blue boxes
+
+5. Green (Snowflake):
+   - Sunny Malik
+   - Ravindranath Dhulipalla
+   - Others in green boxes
+
+6. Grey (Indirect Labor):
+   - All Managers (including Omer Ansari, Murali Kallem, etc.)
+   - All LMTS employees (Rajesh Yarlagadda, Srinivas Podila, etc.)
+   - Yallappa H (Senior Lead, Data Engineer)
+   - Hex Colors: #A9A9A9 (border), #F0F0F0 (background)
+
+Technology Category:
+The Technology category has been represented as a grey color in the chart and encompasses Indirect Labor. This is a higher-level grouping that includes managers and LMTS employees. The color scheme has been updated to use #A9A9A9 (border) and #F0F0F0 (background).
