@@ -1,0 +1,9 @@
+Please replace these placeholder files with actual screenshots from the Employee Org Chart application:
+
+1. org-chart-overview.png - Main application interface showing the overall org chart
+2. employee-types.png - Screenshot showing the visual difference between FTE and Contractor employees
+3. role-specific-view.png - Screenshot showing the different information displayed for managers vs. product managers vs. engineers
+4. department-stats.png - Screenshot showing the statistics and metrics that appear when clicking on a department
+5. product-line-view.png - Screenshot showing the org chart filtered by product line
+
+Image dimensions should be approximately 800x500 pixels for consistency.
