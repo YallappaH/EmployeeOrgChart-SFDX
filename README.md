@@ -23,9 +23,6 @@ https://integration360--i360dev.sandbox.lightning.force.com/c/EmployeeOrgChartAp
 - Search and filter functionality to locate specific employees or teams
 
 ### Employee Type Differentiation
-- Clear visual distinction between FTE (Full-Time Employees) and Contractors
-- FTE employees appear with solid borders
-- Contractors appear with dashed borders and subtle pattern backgrounds
 - Toggle option to show/hide contractors for simplified views
 
 ![Employee Types](docs/images/employee-types.png)
