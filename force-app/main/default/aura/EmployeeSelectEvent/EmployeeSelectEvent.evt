@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="Event to notify when an employee is selected">
+    <aura:attribute name="employee" type="Object" description="The selected employee record"/>
+</aura:event>
