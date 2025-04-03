@@ -1,32 +1,76 @@
 # Employee Organization Chart - Salesforce DX Project
 
-A Salesforce application for visualizing the organizational structure of employees within the company.
+A comprehensive Salesforce application for visualizing and managing the organizational structure of employees within the company.
 
 ## Overview
 
-This project implements a dynamic organizational chart that visually represents the employee hierarchy. The chart utilizes color-coding to distinguish between different departments and supports both regular employees and contractors.
+This interactive application provides a dynamic, color-coded visualization of your organization's reporting structure. The chart offers detailed insights into teams, departments, and individual employee profiles with specialized views for different roles and employee types.
+
+## Application Access
+
+Access the Employee Organization Chart application at:
+```
+https://integration360--i360dev.sandbox.lightning.force.com/c/EmployeeOrgChartApp.app
+```
+
+![Organization Chart Overview](docs/images/org-chart-overview.png)
 
 ## Key Features
 
-- Interactive organizational hierarchy visualization
-- Color-coded departments for easy identification
-- Support for collapsible/expandable nodes
-- Different styling for FTE vs. Contractor employees
-- Detailed employee information panel
+### Interactive Hierarchical Visualization
+- Expandable/collapsible nodes for exploring complex organizational structures
+- Intuitive navigation with click-through capabilities for exploring reporting chains
+- Search and filter functionality to locate specific employees or teams
 
-## Department Color Scheme
+### Employee Type Differentiation
+- Clear visual distinction between FTE (Full-Time Employees) and Contractors
+- FTE employees appear with solid borders
+- Contractors appear with dashed borders and subtle pattern backgrounds
+- Toggle option to show/hide contractors for simplified views
 
-The application uses the following color scheme to differentiate departments:
+![Employee Types](docs/images/employee-types.png)
 
-| Department     | Border Color | Background Color | Description               |
-|----------------|--------------|------------------|---------------------------|
-| Data Cloud     | #F5C93D      | #FFFAED          | Yellow                    |
-| Viz            | #98CEF5      | #F4FAFF          | Blue                      |
-| Snowflake      | #87CEFA      | #F0F8FF          | Green                     |
-| EDH            | #E0B1E0      | #FCF5FC          | Purple/Pink               |
-| Data Tools     | #9FD19F      | #F5FFF5          | Light Blue                |
-| Core Infra     | #B8B8D1      | #F8F8FF          | Light Blue                |
-| Indirect Labor | #A9A9A9      | #F0F0F0          | Grey                      |
+### Department Color Coding
+The application uses an intuitive color scheme to instantly identify departments:
+
+| Department     | Visual Appearance | Description                   |
+|----------------|-------------------|-------------------------------|
+| Data Cloud     | Yellow            | Data Cloud platform teams     |
+| Viz            | Blue              | Visualization & BI teams      |
+| Snowflake      | Green             | Snowflake database teams      |
+| EDH            | Purple/Pink       | Enterprise Data Hub teams     |
+| Data Tools     | Light Blue        | Data tooling teams            |
+| Core Infra     | Medium Blue       | Core infrastructure teams     |
+| Indirect Labor | Grey              | Management & support teams    |
+
+### Role-Based Information Display
+When clicking on an employee node, the system displays customized information based on the employee's role:
+
+- **Managers**: Team size statistics, direct reports, department distribution
+- **Product Managers**: Product roadmap data, feature ownership, customer statistics
+- **Engineers**: Technical specialties, project assignments, productivity metrics
+
+![Role-Based Information](docs/images/role-specific-view.png)
+
+### Department Statistics
+The left sidebar provides interactive department filters that display comprehensive metrics:
+
+- Employee count by department
+- FTE vs. contractor distribution
+- Team composition metrics
+- Budget allocation indicators
+- Project distribution data
+
+Clicking a department circle generates real-time stats and a filtered view of that department's organizational structure.
+
+![Department Statistics](docs/images/department-stats.png)
+
+### Product Line Segmentation
+- View the organization chart segmented by product lines
+- Understand how teams are allocated across different products
+- Reveal cross-functional product teams that span multiple departments
+
+![Product Line View](docs/images/product-line-view.png)
 
 ## Deployment
 
@@ -61,6 +105,10 @@ force-app/
 
 For details on maintaining and extending this application, see the [MAINTENANCE_GUIDE.md](MAINTENANCE_GUIDE.md) file.
 
+## Contributing
+
+We welcome contributions to improve the Employee Organization Chart application! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to submit changes.
+
 ## Color Configuration
 
 The color scheme can be updated by modifying the CSS files:
@@ -68,3 +116,7 @@ The color scheme can be updated by modifying the CSS files:
 - `force-app/main/default/aura/EmployeeOrgChart/EmployeeOrgChart.css`
 
 See [color-mapping.txt](color-mapping.txt) for detailed color assignments.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
