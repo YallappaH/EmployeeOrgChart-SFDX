@@ -1,0 +1,31 @@
+<template>
+    <lightning-card title="Org Chart Controls" icon-name="standard:employee_organization">
+        <div class="slds-p-around_medium">
+            <lightning-button 
+                label="Refresh Org Chart"
+                title="Refreshes the org chart cache"
+                icon-name="utility:refresh"
+                onclick={refreshCache}
+                class="slds-m-right_x-small">
+            </lightning-button>
+            
+            <div class="slds-m-top_small">
+                <template if:true={isRefreshing}>
+                    <lightning-spinner alternative-text="Refreshing..." size="small"></lightning-spinner>
+                </template>
+                <template if:true={showSuccess}>
+                    <div class="slds-text-color_success">
+                        <lightning-icon icon-name="utility:success" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                        Cache refreshed successfully
+                    </div>
+                </template>
+                <template if:true={showError}>
+                    <div class="slds-text-color_error">
+                        <lightning-icon icon-name="utility:error" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                        {errorMessage}
+                    </div>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>
