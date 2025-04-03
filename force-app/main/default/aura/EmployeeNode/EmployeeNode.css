@@ -1,0 +1,242 @@
+/* Root node styling */
+.THIS.employee-node-root {
+    margin-bottom: 10px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Regular node styling */
+.THIS.employee-node {
+    margin-bottom: 10px;
+    position: relative;
+    width: 100%;
+    min-width: 250px;
+}
+
+/* Employee card styling */
+.THIS .employee-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin: 5px 0;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.THIS .employee-card:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+}
+
+.THIS .employee-avatar {
+    margin-right: 10px;
+    background-color: #f3f3f3;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.THIS .profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.THIS .employee-details {
+    flex: 1;
+    overflow: hidden;
+}
+
+.THIS .employee-name {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.THIS .employee-title {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.THIS .employee-category {
+    font-size: 11px;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.THIS .toggle-button {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #0070d2;
+    z-index: 3;
+    flex-shrink: 0;
+}
+
+/* Direct reports container */
+.THIS .direct-reports-container {
+    position: relative;
+    padding-top: 20px; /* Space for vertical line */
+}
+
+.THIS .direct-reports {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* For root nodes, display children horizontally */
+.THIS.employee-node-root .direct-reports {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Branch container */
+.THIS .branch-container {
+    position: relative;
+    padding-top: 20px;
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Branch lines */
+.THIS .branch-line {
+    position: absolute;
+    top: 0;
+    height: 20px;
+    width: 2px;
+    background-color: #d8d8d8;
+    z-index: 1;
+}
+
+/* Child node */
+.THIS .child-node {
+    position: relative;
+}
+
+/* Enhanced Department Color Schemes */
+.THIS .employee-card.Data_Cloud {
+    border-left: 8px solid #F5C93D;
+    background-color: #FFFAED;
+}
+
+.THIS .employee-card.Viz {
+    border-left: 8px solid #98CEF5;  /* Brighter blue */
+    background-color: #F4FAFF;
+}
+
+.THIS .employee-card.Snowflake {
+    border-left: 8px solid #87CEFA;
+    background-color: #F0F8FF;
+}
+
+.THIS .employee-card.EDH {
+    border-left: 8px solid #E0B1E0;  /* Brighter purple */
+    background-color: #FCF5FC;
+}
+
+.THIS .employee-card.Data_Tools {
+    border-left: 8px solid #9FD19F;  /* Green */
+    background-color: #F5FFF5;
+}
+
+.THIS .employee-card.Core_Infra {
+    border-left: 8px solid #B8B8D1;
+    background-color: #F8F8FF;
+}
+
+.THIS .employee-card.Indirect_Labor {
+    border-left: 8px solid #A9A9A9;
+    background-color: #F0F0F0;
+}
+
+/* Employee type styling - FTE vs Contractor */
+.THIS .employee-card.FTE {
+    border: 1px solid #e5e5e5;
+}
+
+.THIS .employee-card.Contractor {
+    border: 1px dashed #aaaaaa;
+    /* A subtle pattern for contractors to make them distinguishable */
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.01),
+        rgba(0, 0, 0, 0.01) 10px,
+        rgba(0, 0, 0, 0) 10px,
+        rgba(0, 0, 0, 0) 20px
+    );
+}
+
+/* Special styling for roles */
+.THIS .employee-card.manager-card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+}
+
+/* Email domain update - changed all to @salesforce.com */
+.THIS .employee-email {
+    font-size: 11px;
+    color: #0070d2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Horizontal connector for root level */
+.THIS.employee-node-root::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    height: 20px;
+    width: 2px;
+    background-color: #d8d8d8;
+}
+
+/* Connect children with horizontal line */
+.THIS.employee-node-root .direct-reports::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background-color: #d8d8d8;
+}
