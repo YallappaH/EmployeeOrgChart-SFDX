@@ -1,0 +1,49 @@
+# Salesforce DX .gitignore
+# Based on Salesforce recommendations and best practices
+
+# Metadata cache and temp files
+.sfdx/
+.sf/
+
+# Local development configuration
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node.js dependencies
+node_modules/
+npm-debug.log
+
+# MacOS system files
+.DS_Store
+*.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Log files
+*.log
+logs/
+
+# Deployment files
+deploy-options.json
+
+# SFDX scratch org files
+*-scratch-def.json
+
+# Coverage reports
+.nyc_output/
+coverage/
+
+# Temp and build files
+temp/
+build/
+dist/
+
+# Miscellaneous
+*.swp
+*.tmp
+*.temp
