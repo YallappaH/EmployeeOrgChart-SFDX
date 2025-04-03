@@ -1,0 +1,225 @@
+.THIS {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.THIS .full-height-container {
+    height: 100%;
+    min-height: 100%;
+}
+
+.THIS .sidebar-container {
+    max-width: 200px;
+    min-width: 180px;
+    background-color: #f8f8f8;
+    border-right: 1px solid #e0e0e0;
+}
+
+.THIS .sidebar {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.THIS .department-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.THIS .department-item {
+    padding: 12px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border-left-width: 5px;
+    border-left-style: solid;
+}
+
+.THIS .department-item:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.THIS .dept-count {
+    display: inline-block;
+    background: rgba(255,255,255,0.7);
+    border-radius: 12px;
+    min-width: 24px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #444;
+    padding: 0 8px;
+}
+
+/* Enhanced Department Color Schemes - matching the node styling */
+.THIS .department-item.data-cloud {
+    background-color: #FFFAED;
+    border-left-color: #F5C93D;
+}
+
+.THIS .department-item.viz {
+    background-color: #F4FAFF;
+    border-left-color: #98CEF5;
+}
+
+.THIS .department-item.snowflake {
+    background-color: #F0F8FF;
+    border-left-color: #87CEFA;
+}
+
+.THIS .department-item.edh {
+    background-color: #FCF5FC;
+    border-left-color: #E0B1E0;
+}
+
+.THIS .department-item.data-tools {
+    background-color: #F5FFF5;
+    border-left-color: #9FD19F;
+}
+
+.THIS .department-item.core-infra {
+    background-color: #F8F8FF;
+    border-left-color: #B8B8D1;
+}
+
+.THIS .department-item.indirect-labor {
+    background-color: #F0F0F0;
+    border-left-color: #A9A9A9;
+}
+
+/* Added a darker shadow to selected department */
+.THIS .department-item.selected {
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+}
+
+.THIS .org-chart-container {
+    height: 100%;
+    overflow: hidden;
+}
+
+.THIS .full-height {
+    height: 100%;
+}
+
+.THIS .hierarchy-section {
+    overflow: auto;
+    height: 100%;
+}
+
+.THIS .org-hierarchy-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.THIS .employee-details-panel {
+    max-width: 350px;
+    min-width: 300px;
+    border-left: 1px solid #e0e0e0;
+    background: #ffffff;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.THIS .details-section {
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+.THIS .section-group {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.THIS .section-group:last-child {
+    border-bottom: none;
+}
+
+.THIS .section-heading {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.THIS .detail-row {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.THIS .detail-label {
+    flex: 0 0 120px;
+    font-weight: bold;
+    color: #666;
+    margin-right: 10px;
+}
+
+.THIS .detail-value {
+    flex: 1;
+    color: #333;
+}
+
+.THIS .manager-link {
+    cursor: pointer;
+    color: #0070d2;
+    display: flex;
+    align-items: center;
+}
+
+.THIS .manager-link:hover {
+    text-decoration: underline;
+}
+
+.THIS .profile-card {
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.THIS .badge-container {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.THIS .department-badge {
+    background-color: #e0e0e0;
+    padding: 3px 6px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+}
+
+/* Enhanced Employee Type Badges */
+.THIS .employee-type-badge {
+    padding: 3px 6px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+}
+
+.THIS .employee-type-badge.FTE {
+    background-color: #DFF0D8;
+    color: #3C763D;
+}
+
+.THIS .employee-type-badge.Contractor {
+    background-color: #F2DEDE;
+    color: #A94442;
+    border: 1px dashed #ebccd1;
+}
+
+.THIS .job-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
