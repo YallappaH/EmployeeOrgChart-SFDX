@@ -1,5 +1,4 @@
-({ 
-    // Method to load all employees
+({    // Method to load all employees
     loadAllEmployees: function(component) {
         console.log('Loading all employees...');
         var action = component.get("c.getAllEmployeesWithHierarchy");
@@ -226,7 +225,7 @@
         // Used for the hide contractors functionality
         if (component.get("v.hideContractors")) {
             // Hide contractors initially if the setting is enabled
-            this.directlyHideContractors();
+            this.directlyHideContractors(component);
         }
         
         // Fix any duplicate DOM nodes
@@ -273,87 +272,99 @@
         }, 1000);
     },
     
-    // Method to hide contractors
-    directlyHideContractors: function() {
-        console.log('Directly hiding contractor employees...');
+    // SIMPLIFIED AND DIRECT METHOD to hide contractors only
+    directlyHideContractors: function(component) {
+        console.log('Directly hiding ONLY contractor employees...');
         
-        // Add a debug class to all cards to confirm we're processing them
-        document.querySelectorAll('.employee-card').forEach(function(card) {
-            card.classList.add('debug-processed');
-        });
+        // First, remove any existing hiding styles
+        this.clearContractorHidingStyles();
         
-        // Make sure we have the most up-to-date styles and classes
-        var contractorCards = document.querySelectorAll('.employee-card[data-employee-type="Contractor"], .employee-card.Contractor');
-        console.log('Found ' + contractorCards.length + ' contractor cards to hide');
-        
-        // Show a toast message if no contractors were found in current department
-        if (contractorCards.length === 0) {
-            // Find out which department we're in
-            var deptInfo = document.querySelector('.department-overview');
-            var deptName = 'current department';
-            if (deptInfo) {
-                var selectedDept = document.querySelector('.department-item.selected');
-                if (selectedDept) {
-                    deptName = selectedDept.textContent.trim();
-                }
-            }
-            
-            console.log('No contractors found in ' + deptName);
-            
-            // Try to show a toast message
-            try {
-                var toastEvent = $A.get("e.force:showToast");
-                if (toastEvent) {
-                    toastEvent.setParams({
-                        title: "No Contractors",
-                        message: "There are no contractors to hide in this department.",
-                        type: "info"
-                    });
-                    toastEvent.fire();
-                }
-            } catch(e) {
-                console.error('Error showing toast: ' + e);
-            }
+        // Get all employees from the component
+        var allEmployees = component.get("v.employees");
+        if (!allEmployees) {
+            console.log('No employee data available');
             return;
         }
         
-        // Log which cards were found for debugging
-        contractorCards.forEach(function(card) {
-            var nameElem = card.querySelector('.employee-name');
-            var deptElem = card.querySelector('.employee-department');
-            console.log('Hiding contractor: ' + 
-                       (nameElem ? nameElem.textContent : 'Unknown') + 
-                       ' - Department: ' + 
-                       (deptElem ? deptElem.textContent : 'Unknown'));
-            
-            // Try multiple methods to hide the card
-            var branchContainer = card.closest('.branch-container');
-            if (branchContainer) {
-                branchContainer.style.display = 'none';
-                branchContainer.classList.add('hidden-contractor');
+        // Create arrays to store contractor and FTE employee names
+        var contractorNames = [];
+        var fteNames = [];
+        
+        // Sort employees by type
+        allEmployees.forEach(function(emp) {
+            if (emp.Employee_Type__c === 'Contractor') {
+                contractorNames.push(emp.Name);
             } else {
-                card.style.display = 'none';
-                card.classList.add('hidden-contractor');
+                fteNames.push(emp.Name);
             }
         });
         
-        // Explicitly add a class to all contractor cards for direct CSS hiding as a fallback
-        document.styleSheets[0].insertRule('.employee-card[data-employee-type="Contractor"], .employee-card.Contractor { display: none !important; }', 0);
-        document.styleSheets[0].insertRule('.branch-container:has(.employee-card[data-employee-type="Contractor"]) { display: none !important; }', 0);
+        console.log('Found ' + contractorNames.length + ' contractors and ' + fteNames.length + ' FTEs in data');
+        
+        // If no contractors found in the data, return early
+        if (contractorNames.length === 0) {
+            console.log('No contractors found in employee data');
+            return;
+        }
+        
+        // Now find all employee cards in the DOM
+        var employeeCards = document.querySelectorAll('.employee-card');
+        var hiddenCount = 0;
+        
+        // Hide only cards where the name matches a contractor name
+        employeeCards.forEach(function(card) {
+            var nameElement = card.querySelector('.employee-name');
+            if (nameElement) {
+                var name = nameElement.textContent.trim();
+                
+                // If this employee is in our contractor list, hide it
+                if (contractorNames.includes(name)) {
+                    var branchContainer = card.closest('.branch-container');
+                    if (branchContainer) {
+                        branchContainer.style.display = 'none';
+                        branchContainer.classList.add('hidden-contractor');
+                    } else {
+                        card.style.display = 'none';
+                        card.classList.add('hidden-contractor');
+                    }
+                    hiddenCount++;
+                    console.log('Hiding contractor: ' + name);
+                } else if (fteNames.includes(name)) {
+                    // Ensure FTEs are visible
+                    if (card.style.display === 'none') {
+                        card.style.display = '';
+                        card.classList.remove('hidden-contractor');
+                    }
+                    
+                    var branchContainer = card.closest('.branch-container');
+                    if (branchContainer && branchContainer.classList.contains('hidden-contractor')) {
+                        branchContainer.style.display = '';
+                        branchContainer.classList.remove('hidden-contractor');
+                    }
+                }
+            }
+        });
+        
+        console.log('Successfully hidden ' + hiddenCount + ' contractor nodes');
+        
+        // Fix duplicate nodes again after hiding contractors
+        setTimeout(function() {
+            this.fixDuplicateEmployeeNodes(component);
+        }.bind(this), 300);
     },
     
-    // Method to show all employees
-    directlyShowAllEmployees: function() {
-        console.log('Directly showing all employees...');
-        
+    // Method to clear contractor hiding styles
+    clearContractorHidingStyles: function() {
         // Remove any style rules we added
         var styleSheet = document.styleSheets[0];
         try {
             for (var i = 0; i < styleSheet.cssRules.length; i++) {
                 var rule = styleSheet.cssRules[i];
-                if (rule.selectorText && 
-                    (rule.selectorText.includes('Contractor') || 
-                     rule.selectorText.includes('contractor'))) {
+                if (rule.selectorText && (
+                    rule.selectorText.includes('Contractor') || 
+                    rule.selectorText.includes('contractor') ||
+                    rule.selectorText.includes('hidden-contractor')
+                )) {
                     styleSheet.deleteRule(i);
                     i--; // Adjust index after deletion
                 }
@@ -362,21 +373,35 @@
             console.error('Error cleaning up style rules:', e);
         }
         
-        // Show all branch containers
-        var allBranchContainers = document.querySelectorAll('.branch-container, .branch-container.hidden-contractor');
+        // Also manually show all elements that might have been hidden
+        document.querySelectorAll('.hidden-contractor').forEach(function(el) {
+            el.classList.remove('hidden-contractor');
+            el.style.display = '';
+        });
+    },
+    
+    // Method to show all employees
+    directlyShowAllEmployees: function(component) {
+        console.log('Directly showing all employees...');
+        
+        // Clear any contractor-hiding styles
+        this.clearContractorHidingStyles();
+        
+        // Show all branch containers that were hidden
+        var allBranchContainers = document.querySelectorAll('.branch-container');
         allBranchContainers.forEach(function(container) {
             container.style.display = '';
             container.classList.remove('hidden-contractor');
         });
         
         // Also ensure any directly hidden cards are shown
-        var allCards = document.querySelectorAll('.employee-card, .employee-card.hidden-contractor');
+        var allCards = document.querySelectorAll('.employee-card');
         allCards.forEach(function(card) {
             card.style.display = '';
             card.classList.remove('hidden-contractor');
         });
         
-        console.log('Showed ' + allBranchContainers.length + ' branches and ' + allCards.length + ' cards');
+        console.log('Showed all branch containers and cards');
         
         // But keep duplicates hidden
         this.fixDuplicateEmployeeNodes(component);
